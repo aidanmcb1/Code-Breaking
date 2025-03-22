@@ -42,7 +42,7 @@ public class StraddlingCheckerboard {
         return table;
     }
 
-    public static void main(String filePath) {
+    public static void main(String[] args) {
         
     }
 }
