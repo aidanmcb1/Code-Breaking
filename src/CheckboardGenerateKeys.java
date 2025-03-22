@@ -18,7 +18,10 @@ public class CheckboardGenerateKeys {
             keys.createNewFile();
             FileWriter writer = new FileWriter(keys);
             int total = 0;
-            
+
+            System.out.println("Starting.");
+            long timeStart = System.currentTimeMillis();
+
             while (numbers[0] < 10) {
                 
                 for (int i = 0; i < 10; i++) {
@@ -52,8 +55,12 @@ public class CheckboardGenerateKeys {
                 }
             }
 
-            System.out.println("Done");
-            System.out.println("Total number of keys: " + total);
+            long timeEnd = System.currentTimeMillis();
+            double totalTime = timeEnd - timeStart;
+
+            System.out.println("Done.");
+            System.out.println("Total number of keys: " + total + ".");
+            System.out.println("Took " + totalTime + " seconds.");
 
             writer.close();
 
