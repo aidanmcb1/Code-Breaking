@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 public class CheckboardGenerateKeys {
 
     /*This class is to generate valid keys (10 digits, all unique) for straddling checkerboard 
-    *to avoid wasting compute on multiple runs.
+    * built separately to avoid wasting compute on multiple runs.
     */
     public static void main(String[] args) {
 
@@ -60,7 +60,7 @@ public class CheckboardGenerateKeys {
 
             System.out.println("Done.");
             System.out.println("Total number of keys: " + total + ".");
-            System.out.println("Took " + totalTime + " seconds.");
+            System.out.println("Took " + totalTime + " milliseconds.");
 
             writer.close();
 
