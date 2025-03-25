@@ -1,11 +1,48 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class StraddlingCheckerboard {
 
-    public static String decode(HashMap<String, String> key) {
-        //TODO this method
+    /**
+     * Takes the cipher and runs it through the table with the selected key.
+     * @param table
+     * the table of keys and their letter values.
+     * @param cipher
+     * the cipher text.
+     * @param key
+     * the key used.
+     * @return
+     * the decoded string.
+     */
+    public static String decode(HashMap<String, String> table, String cipher, String key) {
 
-        return " ";
+        StringBuilder deciphered = new StringBuilder();
+        
+        for (int i = 0; i < cipher.length(); i++) {
+            int current = Character.getNumericValue(cipher.charAt(i));
+            int keyEight = Character.getNumericValue(key.charAt(8));
+            int keyNine = Character.getNumericValue(key.charAt(9));
+
+            if (current == keyEight || current == keyNine) {
+                int oneAhead = Character.getNumericValue(cipher.charAt(i + 1));
+
+                if (current == 0) {
+                    deciphered.append(table.get("0" + oneAhead));
+                    i++;
+                } else {
+                    deciphered.append(table.get(Integer.toString(current * 10 + oneAhead)));
+                i++;
+                }
+            } else {
+                deciphered.append(table.get(Integer.toString(current)));
+            }
+        }
+
+        String result = deciphered.toString();
+        return result;
     }
     /**
      * Creates a hashmap of <String, String> pairs for each possible numerical value with the corresponding letter.
@@ -32,17 +69,41 @@ public class StraddlingCheckerboard {
         }
         //Second table row, adding numbers[8] to front of key. See readme for more info
         for (int i = 0; i < 10; i++) {
-            table.put(numbers[8] + numbers[i + 8], letters[i + 8]);
+            table.put(numbers[8] + numbers[i], letters[i + 8]);
         }
         //Third table row, adding numbers[9] to front of key. See readme for more info
         for (int i = 0; i < 10; i++) {
-            table.put(numbers[9] + numbers[i + 18], letters[i + 18]);
+            table.put(numbers[9] + numbers[i], letters[i + 18]);
         }
 
         return table;
     }
 
+    /**
+     * Loads all keys into memory and returns a linked list.
+     * @param filepath
+     * the file path to be followed.
+     */
+    public static LinkedList<String> prepareKeys(String filepath) {
+        InputStreamReader in = new InputStreamReader(System.in);
+        BufferedReader filereader = new BufferedReader(in , 10);
+        LinkedList<String> list = new LinkedList<String>();
+        String line = "";
+
+        try {
+            while ((line = filereader.readLine()) != null) {
+                list.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
+
+        return list;
+    }
+
     public static void main(String[] args) {
+
         
+
     }
 }
