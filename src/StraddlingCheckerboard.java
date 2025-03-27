@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +11,7 @@ import java.util.LinkedList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+//Class for implementing comparator to be used with sort.
 class Answer {
     public int score;
     public String plaintext;
@@ -17,8 +20,14 @@ class Answer {
         score = s;
         plaintext = p;
     }
+
+    @Override
+    public String toString() {
+        return "Score: " + this.score + ". Plaintext: " + this.plaintext;
+    }
 }
 
+//comparator class implementation.
 class AnswerCompare<T> implements Comparator<T> {
     public int compare(T obj1, T obj2) {
 
@@ -57,7 +66,7 @@ public class StraddlingCheckerboard {
             int keyEight = Character.getNumericValue(key.charAt(8));
             int keyNine = Character.getNumericValue(key.charAt(9));
 
-            if (current == keyEight || current == keyNine) {
+            if (current == keyEight && i < 5523 || current == keyNine && i < 5523) {
                 int oneAhead = Character.getNumericValue(cipher.charAt(i + 1));
 
                 if (current == 0) {
@@ -70,6 +79,7 @@ public class StraddlingCheckerboard {
             } else {
                 deciphered.append(table.get(Integer.toString(current)));
             }
+
         }
 
         String result = deciphered.toString();
@@ -195,11 +205,27 @@ public class StraddlingCheckerboard {
             String plaintext = decode(table, cipher, currentKey);
             int score = checkDictionary(plaintext, dictionary);
 
-            Answer answer = new Answer(score, plaintext);
-            answers.add(answer);
+            if (score >= 700) {
+                Answer answer = new Answer(score, plaintext);
+                answers.add(answer);
+            }
         }
 
         Comparator<Answer> comparator = new AnswerCompare<Answer>();
         Collections.sort(answers, comparator);
+
+        try {
+            File answerFile = new File("answers.txt");
+            answerFile.createNewFile();
+            FileWriter writer = new FileWriter(answerFile);
+
+            for (Answer x : answers) {
+                writer.write(x.toString());
+                writer.write("\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Something went wrong");
+        }
     }
 }
